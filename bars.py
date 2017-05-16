@@ -22,9 +22,6 @@ def haversine(lon1, lat1, lon2, lat2):
 
 
 def load_data(filepath):
-    # output_file = open(filepath, encoding = "Windows-1251").read()
-    # output_json = json.loads(output_file)
-    # return output_json
 
     if not os.path.exists(filepath):
     	return None
