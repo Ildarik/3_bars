@@ -17,8 +17,8 @@ def haversine(lon1, lat1, lon2, lat2):
     dlat = lat2 - lat1 
     a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
     c = 2 * asin(sqrt(a)) 
-    r = 6371 # Radius of earth in kilometers. Use 3956 for miles
-    return c * r
+    earth_radius = 6371 # Radius of earth in kilometers. Use 3956 for miles
+    return c * earth_radius
 
 
 def load_data(filepath):
@@ -29,36 +29,36 @@ def load_data(filepath):
     	return json.load(file_handler) 
 
 def get_biggest_bar(data):
-    BiggestBarSeatsCount = 0
-    BiggestBarName = ''
+    biggest_bar_seatscount = 0
+    biggest_bar_name = ''
     for bar in data:
-    	if bar['SeatsCount'] > BiggestBarSeatsCount:
-    		BiggestBarSeatsCount = bar['SeatsCount']
-    		BiggestBarName = bar['Name']
-    return BiggestBarName
+    	if bar['SeatsCount'] > biggest_bar_seatscount:
+    		biggest_bar_seatscount = bar['SeatsCount']
+    		biggest_bar_name = bar['Name']
+    return biggest_bar_name
 
 
 def get_smallest_bar(data):
-    SmallestBarSeatsCount = 1000
-    SmallestBarName = ''
+    smallest_bar_seatscount = 1000
+    smallest_bar_name = ''
     for bar in data:
-    	if bar['SeatsCount'] < SmallestBarSeatsCount:
-    		SmallestBarSeatsCount = bar['SeatsCount']
-    		SmallestBarName = bar['Name']
-    return SmallestBarName
+    	if bar['SeatsCount'] < smallest_bar_seatscount:
+    		smallest_bar_seatscount = bar['SeatsCount']
+    		smallest_bar_name = bar['Name']
+    return smallest_bar_name
 
 
 def get_closest_bar(data, longitude, latitude):
     distance = 1000
-    ClosestBarName = ''
+    closest_bar_name = ''
     for bar in data:
         lon2 = bar['geoData']['coordinates'][0]
         lat2 = bar['geoData']['coordinates'][1]
-        DistanceToBar = haversine(longitude, latitude, lon2, lat2)        
-        if DistanceToBar < distance:
-            distance = DistanceToBar
-            ClosestBarName = bar['Name']
-    return ClosestBarName
+        distance_to_bar = haversine(longitude, latitude, lon2, lat2)        
+        if distance_to_bar < distance:
+            distance = distance_to_bar
+            closest_bar_name = bar['Name']
+    return closest_bar_name
 
 
 if __name__ == '__main__':
