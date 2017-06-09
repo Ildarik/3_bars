@@ -36,15 +36,13 @@ def get_smallest_bar(data):
 
 
 def get_closest_bar(data, longitude, latitude):
-    distance = 1000
-    closest_bar_name = ''
+    bars_dict = {}
     for bar in data:
         lon2 = bar['geoData']['coordinates'][0]
         lat2 = bar['geoData']['coordinates'][1]
-        distance_to_bar = haversine(longitude, latitude, lon2, lat2)        
-        if distance_to_bar < distance:
-            distance = distance_to_bar
-            closest_bar_name = bar['Name']
+        distance_to_bar = haversine(longitude, latitude, lon2, lat2)
+        bars_dict.update({bar['Name']: distance_to_bar})
+    closest_bar_name = min(bars_dict, key=bars_dict.get)
     return closest_bar_name
 
 
