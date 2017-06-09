@@ -32,16 +32,12 @@ def get_biggest_bar(data):
     biggest_bar = max(bars_dict, key=bars_dict.get)
     return biggest_bar
 
-
 def get_smallest_bar(data):
-    # bars_dict = {}
-    # for bar in data:
-    #     bars_dict.update({bar['Name']: bar['SeatsCount']})
-    # smallest_bar = min(bars_dict, key=bars_dict.get)
-    # return smallest_bar
-    smallest_bar = min(enumerate(data), key=lambda bar: bar[1]['SeatsCount'])
-    return smallest_bar[1]['Name']
-
+    bars_dict = {}
+    for bar in data:
+        bars_dict.update({bar['Name']: bar['SeatsCount']})
+    smallest_bar = min(bars_dict, key=bars_dict.get)
+    return smallest_bar
 
 def get_closest_bar(data, longitude, latitude):
     bars_dict = {}
