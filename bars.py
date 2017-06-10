@@ -26,29 +26,27 @@ def load_data(filepath):
 
 
 def get_biggest_bar(data):
-    bars_dict = {}
-    for bar in data:
-        bars_dict.update({bar['Name']: bar['SeatsCount']})
-    biggest_bar = max(bars_dict, key=bars_dict.get)
-    return biggest_bar
+    biggest_bar = max(data, key=lambda bar: bar['SeatsCount'])
+    biggest_bar_name = biggest_bar['Name']
+    return biggest_bar_name
+
 
 def get_smallest_bar(data):
-    bars_dict = {}
-    for bar in data:
-        bars_dict.update({bar['Name']: bar['SeatsCount']})
-    smallest_bar = min(bars_dict, key=bars_dict.get)
-    return smallest_bar
+    smallest_bar = min(data, key=lambda bar: bar['SeatsCount'])
+    smallest_bar_name = smallest_bar['Name']
+    return smallest_bar_name
+
 
 def get_closest_bar(data, longitude, latitude):
-    bars_dict = {}
+    bars_with_distance = []
     for bar in data:
         lon2 = bar['geoData']['coordinates'][0]
         lat2 = bar['geoData']['coordinates'][1]
-        distance_to_bar = haversine(longitude, latitude, lon2, lat2)
-        bars_dict.update({bar['Name']: distance_to_bar})
-    closest_bar_name = min(bars_dict, key=bars_dict.get)
+        bars_with_distance.append([haversine(longitude, latitude, lon2, lat2), bar['Name']])
+    closest_bar = min(bars_with_distance)
+    closest_bar_name = closest_bar[1]
     return closest_bar_name
-
+56.007125, 37.449113
 
 def handle_user_input(description):
     try:
@@ -62,8 +60,6 @@ if __name__ == '__main__':
     our_json = load_data(argv[1])
     print('Самый большой бар: ', get_biggest_bar(our_json))
     print('Самый маленький бар: ', get_smallest_bar(our_json))
-    
     longitude = handle_user_input('широта')
     latitude = handle_user_input('долгота')
-
     print('Самый близкий бар: ', get_closest_bar(our_json, longitude, latitude))
