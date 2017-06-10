@@ -46,7 +46,7 @@ def get_closest_bar(data, longitude, latitude):
     closest_bar = min(bars_with_distance)
     closest_bar_name = closest_bar[1]
     return closest_bar_name
-56.007125, 37.449113
+
 
 def handle_user_input(description):
     try:
