@@ -1,7 +1,7 @@
 import json
 import os
 from sys import argv
-from math import radians, cos, sin, asin, sqrt
+from math import sqrt
 
 
 def load_data(filepath):
@@ -23,23 +23,16 @@ def get_smallest_bar(data):
     return smallest_bar_name
 
 
-def get_closest_bar(data, longitude, latitude):
-    def haversine(bar, longitude=longitude, latitude=latitude):
-        """
-        Calculate the great circle distance between two points
-        on the earth (specified in decimal degrees)
-        """
+def get_closest_bar(data):
+    def get_distance(bar, longitude, latitude):
         bar_longitude = bar['geoData']['coordinates'][0]
         bar_latitude = bar['geoData']['coordinates'][1]
-        lon1, lat1, lon2, lat2 = map(radians, [longitude, latitude, bar_longitude, bar_latitude])
-        dlon = lon2 - lon1
-        dlat = lat2 - lat1
-        a = sin(dlat / 2) ** 2 + cos(lat1) * cos(lat2) * sin(dlon / 2) ** 2
-        c = 2 * asin(sqrt(a))
-        earth_radius = 6371
-        return c * earth_radius
+        dlon = longitude - bar_longitude
+        dlat = latitude - bar_latitude
+        distance = sqrt(dlon**2 + dlat**2)
+        return distance
 
-    closest_bar = min(data, key=haversine)
+    closest_bar = min(data, key=lambda x: get_distance(x, longitude, latitude))
     return closest_bar['Name']
 
 def handle_user_input(description):
@@ -56,4 +49,4 @@ if __name__ == '__main__':
     print('Самый маленький бар: ', get_smallest_bar(our_json))
     longitude = handle_user_input('широта')
     latitude = handle_user_input('долгота')
-    print('Самый близкий бар: ', get_closest_bar(our_json, longitude, latitude))
+    print('Самый близкий бар: ', get_closest_bar(our_json))
