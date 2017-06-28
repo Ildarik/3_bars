@@ -22,16 +22,15 @@ def get_smallest_bar(data):
     smallest_bar_name = smallest_bar['Name']
     return smallest_bar_name
 
+def get_distance(bar, longitude, latitude):
+    bar_longitude = bar['geoData']['coordinates'][0]
+    bar_latitude = bar['geoData']['coordinates'][1]
+    dlon = longitude - bar_longitude
+    dlat = latitude - bar_latitude
+    distance = sqrt(dlon**2 + dlat**2)
+    return distance
 
 def get_closest_bar(data):
-    def get_distance(bar, longitude, latitude):
-        bar_longitude = bar['geoData']['coordinates'][0]
-        bar_latitude = bar['geoData']['coordinates'][1]
-        dlon = longitude - bar_longitude
-        dlat = latitude - bar_latitude
-        distance = sqrt(dlon**2 + dlat**2)
-        return distance
-
     closest_bar = min(data, key=lambda x: get_distance(x, longitude, latitude))
     return closest_bar['Name']
 
